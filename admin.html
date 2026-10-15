@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrielCode | Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Cargamos la librería de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-100 p-10">
+
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
+        <h1 class="text-3xl font-bold mb-6 text-blue-600">Subir Nuevo Proyecto</h1>
+        
+        <form id="form-proyecto" class="space-y-4">
+            <div>
+                <label class="block font-semibold">Título del Proyecto</label>
+                <input type="text" id="titulo" class="w-full border p-2 rounded" required placeholder="Ej: Capitana Makeup">
+            </div>
+
+            <div>
+                <label class="block font-semibold">Descripción</label>
+                <textarea id="descripcion" class="w-full border p-2 rounded" rows="3" required></textarea>
+            </div>
+
+            <div>
+                <label class="block font-semibold">Tags (Separados por coma)</label>
+                <input type="text" id="tags" class="w-full border p-2 rounded" required placeholder="Ej: E-commerce, Python, React">
+            </div>
+
+            <div>
+                <label class="block font-semibold">Imagen (Captura de pantalla)</label>
+                <input type="file" id="imagen" accept="image/*" class="w-full border p-2 rounded" required>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded hover:bg-blue-700 transition">
+                Subir Proyecto a la Web
+            </button>
+        </form>
+
+        <div id="mensaje" class="mt-4 font-bold text-center hidden"></div>
+    </div>
+
+    <script>
+        // 1. CONECTAR CON SUPABASE (Reemplaza con tus datos reales)
+        const supabaseUrl = 'TU_URL_DE_SUPABASE';
+        const supabaseKey = 'TU_KEY_ANON_DE_SUPABASE';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        const form = document.getElementById('form-proyecto');
+        const mensajeInfo = document.getElementById('mensaje');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            mensajeInfo.className = "mt-4 font-bold text-center text-blue-500 block";
+            mensajeInfo.innerText = "Subiendo imagen y guardando datos...";
+
+            // Capturar los datos del formulario
+            const titulo = document.getElementById('titulo').value;
+            const descripcion = document.getElementById('descripcion').value;
+            // Convertir "E-commerce, UX" en el formato de array de Supabase
+            const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim()); 
+            const archivoImagen = document.getElementById('imagen').files[0];
+
+            try {
+                // 2. SUBIR LA IMAGEN A STORAGE
+                // Creamos un nombre único para la foto
+                const nombreArchivo = `${Date.now()}_${archivoImagen.name}`;
+                
+                const { data: uploadData, error: uploadError } = await supabase.storage
+                    .from('portafolio')
+                    .upload(nombreArchivo, archivoImagen);
+
+                if (uploadError) throw uploadError;
+
+                // 3. OBTENER EL LINK PÚBLICO DE LA IMAGEN
+                const { data: urlData } = supabase.storage
+                    .from('portafolio')
+                    .getPublicUrl(nombreArchivo);
+                
+                const urlImagenPublica = urlData.publicUrl;
+
+                // 4. GUARDAR TODO EN LA TABLA 'proyectos'
+                const { error: dbError } = await supabase
+                    .from('proyectos')
+                    .insert([
+                        { 
+                            titulo: titulo, 
+                            descripcion: descripcion, 
+                            tags: tags, 
+                            url_imagen: urlImagenPublica 
+                        }
+                    ]);
+
+                if (dbError) throw dbError;
+
+                // Éxito
+                mensajeInfo.className = "mt-4 font-bold text-center text-green-600 block";
+                mensajeInfo.innerText = "¡Proyecto subido con éxito! Ya puedes verlo en tu web.";
+                form.reset(); // Limpiar el formulario
+
+            } catch (error) {
+                console.error(error);
+                mensajeInfo.className = "mt-4 font-bold text-center text-red-600 block";
+                mensajeInfo.innerText = "Hubo un error: " + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
