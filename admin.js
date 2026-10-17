@@ -17,6 +17,7 @@
     let projectGallery = [];
     let removeProfileImage = false;
     let removeHeroImage = false;
+    let removeProjectImage = false;
     const contentGroups = [
         {
             title: "Marca y navegación",
@@ -416,9 +417,10 @@
             if (field.type === "checkbox") field.checked = Boolean(value);
         });
         if (type === "project" && item.image_url) {
-            showPreview(document.getElementById("project-image-preview"), item.image_url);
+            showPreview(document.getElementById("project-image-preview"), item.image_url, true);
         }
         if (type === "project") {
+            removeProjectImage = false;
             projectGallery = (item.gallery_urls || []).map((url, index) => ({
                 url,
                 path: (item.gallery_paths || [])[index] || ""
@@ -437,6 +439,7 @@
             const preview = document.getElementById("project-image-preview");
             preview.replaceChildren();
             preview.hidden = true;
+            removeProjectImage = false;
             projectGallery = [];
             renderProjectGalleryPreview();
         }
@@ -596,6 +599,9 @@
                 imageUrl = image.url;
                 imagePath = image.path;
                 uploadedPaths.push(image.path);
+            } else if (removeProjectImage) {
+                imageUrl = null;
+                imagePath = null;
             }
             const galleryFiles = form.getAll("gallery").filter((image) => image instanceof File && image.size > 0);
             galleryFiles.forEach(validateImage);
@@ -819,6 +825,28 @@
             renderProjectGalleryPreview(files);
         }
     });
+    document.getElementById("project-image-preview").addEventListener("click", (event) => {
+        const remove = event.target.closest("[data-stored]");
+        if (!remove) return;
+        const imageInput = projectForm.elements.namedItem("image");
+        const previous = projects.find((project) => project.id === projectForm.elements.namedItem("id").value);
+        imageInput.value = "";
+        if (remove.dataset.stored === "true") {
+            removeProjectImage = true;
+            const preview = document.getElementById("project-image-preview");
+            preview.replaceChildren();
+            preview.hidden = true;
+            return;
+        }
+        removeProjectImage = false;
+        if (previous && previous.image_url) {
+            showPreview(document.getElementById("project-image-preview"), previous.image_url, true);
+        } else {
+            const preview = document.getElementById("project-image-preview");
+            preview.replaceChildren();
+            preview.hidden = true;
+        }
+    });
     [contentForm.elements.namedItem("profile_image"), projectForm.elements.namedItem("image")].forEach((input) => {
         input.addEventListener("change", () => {
             const file = input.files[0];
@@ -828,6 +856,7 @@
                 const preview = input.name === "profile_image"
                     ? document.getElementById("profile-image-preview")
                     : document.getElementById("project-image-preview");
+                if (input.name === "image") removeProjectImage = false;
                 showPreview(preview, URL.createObjectURL(file));
             } catch (error) {
                 showMessage(dashboardMessage, error.message, true);
