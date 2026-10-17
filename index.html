@@ -2,149 +2,109 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BrielCode | Desarrollo de Software y Automatización</title>
-    <!-- Tipografías: Montserrat y Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS (CDN para despliegue rápido) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        briel: '#1A56DB', // Azul Principal
-                        dark: '#111827',  // Gris Carbón
-                        light: '#F3F4F6'  // Gris Nube
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Montserrat', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f8fc">
+    <meta name="description" content="Desarrollo web, comercio electrónico y automatización para empresas en Colombia." data-content="meta_description">
+    <title>BrielCode | Desarrollo digital para tu negocio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="/public.js"></script>
 </head>
-<body class="bg-white text-dark antialiased">
-
-    <!-- Navegación -->
-    <nav class="container mx-auto p-6 flex justify-between items-center">
-        <div class="text-2xl font-heading font-bold text-briel">BrielCode.</div>
-        <a href="#contacto" class="hidden md:block bg-dark text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-800 transition">Hablemos</a>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="container mx-auto px-6 py-16 text-center md:py-24">
-        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">Transformamos tu negocio físico en una <span class="text-briel">plataforma digital escalable.</span></h1>
-        <p class="text-lg text-gray-600 mb-10 max-w-2xl mx-auto">Desde E-commerce hasta automatización con Inteligencia Artificial. Construimos la tecnología que tu empresa en Colombia necesita para crecer.</p>
-        <a href="#contacto" class="bg-briel text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition shadow-lg inline-block">Cotizar mi proyecto por WhatsApp</a>
-    </section>
-
-    <!-- Problema / Solución -->
-    <section class="bg-light py-16">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12">¿Tu negocio sigue dependiendo de procesos manuales?</h2>
-            <div class="grid md:grid-cols-3 gap-8 text-center">
-                <div class="p-6 bg-white rounded-xl shadow-sm">
-                    <div class="text-briel text-4xl mb-4">🛒</div>
-                    <h3 class="text-xl font-bold mb-2">Digitalización Total</h3>
-                    <p class="text-gray-600">Llevamos tus ventas a internet con tiendas online robustas y seguras.</p>
-                </div>
-                <div class="p-6 bg-white rounded-xl shadow-sm">
-                    <div class="text-briel text-4xl mb-4">⚙️</div>
-                    <h3 class="text-xl font-bold mb-2">Plataformas a Medida</h3>
-                    <p class="text-gray-600">Academias virtuales, foros y sistemas web diseñados exactamente para tu necesidad.</p>
-                </div>
-                <div class="p-6 bg-white rounded-xl shadow-sm">
-                    <div class="text-briel text-4xl mb-4">🤖</div>
-                    <h3 class="text-xl font-bold mb-2">Automatización con IA</h3>
-                    <p class="text-gray-600">Ahorra horas de trabajo integrando Inteligencia Artificial en tus procesos diarios.</p>
-                </div>
+<body>
+    <header class="site-header">
+        <nav class="nav container" aria-label="Navegación principal">
+            <a class="brand" href="#inicio" aria-label="BrielCode, inicio"><span class="brand-mark" data-content="brand_initial">B</span><span data-content="brand_name">BrielCode</span><span class="brand-dot">.</span></a>
+            <div class="nav-links">
+                <a href="#servicios" data-content="nav_services">Servicios</a>
+                <a href="#proyectos" data-content="nav_projects">Proyectos</a>
+                <a href="#sobre-mi" data-content="nav_about">Sobre mí</a>
             </div>
-        </div>
-    </section>
+            <a class="button button-dark nav-cta" href="#contacto" data-whatsapp-link><span data-content="nav_cta">Hablemos</span><span aria-hidden="true">↗</span></a>
+        </nav>
+    </header>
 
-    <!-- Portafolio -->
-    <section class="container mx-auto px-6 py-20">
-        <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Proyectos Destacados</h2>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Proyecto 1 -->
-            <div class="border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition">
-                <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-400">[Imagen Ecosistema Web]</div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">Trading en la Zona</h3>
-                    <p class="text-gray-600 mb-4 text-sm">Arquitectura web multifuncional. Módulos para cursos, análisis de mercado y reproductor de transmisiones en vivo integrados en una sola plataforma para inversores.</p>
-                    <div class="flex gap-2 text-xs font-semibold text-briel">
-                        <span class="bg-blue-50 px-2 py-1 rounded">Web App</span>
-                        <span class="bg-blue-50 px-2 py-1 rounded">Gestión de Usuarios</span>
-                    </div>
+    <main>
+        <section class="hero container" id="inicio">
+            <div class="hero-copy">
+                <p class="eyebrow"><span class="status-dot"></span> <span data-content="hero_eyebrow">DESARROLLO DIGITAL · COLOMBIA</span></p>
+                <h1><span data-content="hero_title">Tu negocio merece</span> <span class="text-gradient" data-content="hero_highlight">crecer sin límites.</span></h1>
+                <p class="hero-description" data-content="hero_description">Creamos experiencias digitales, tiendas online y automatizaciones que convierten buenas ideas en negocios preparados para crecer.</p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href="#contacto" data-whatsapp-link><span data-content="hero_cta">Hablemos de tu proyecto</span><span aria-hidden="true">↗</span></a>
+                    <a class="text-link" href="#proyectos"><span data-content="hero_secondary_cta">Conoce nuestro trabajo</span><span aria-hidden="true">↓</span></a>
                 </div>
+                <div class="hero-proof"><div class="avatar-stack" aria-hidden="true"><span>B</span><span>+</span><span>∞</span></div><p>Tecnología pensada para <strong data-content="hero_proof">personas y negocios reales.</strong></p></div>
             </div>
+            <div class="hero-visual" aria-label="Desarrollo de soluciones digitales">
+                <div class="visual-glow"></div>
+                <div class="visual-card visual-back"><span class="code-dot"></span><span class="code-line"></span><span class="code-line short"></span><span class="code-line medium"></span><span class="code-line short"></span><span class="code-line"></span></div>
+                <div class="visual-card visual-front">
+                    <div class="visual-top"><span class="visual-logo">b.</span><span class="visual-menu">•••</span></div>
+                    <div class="visual-tag">TU PRÓXIMA IDEA</div>
+                    <div class="visual-title">Diseñada para<br><span>llegar más lejos.</span></div>
+                    <div class="visual-chart"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="visual-foot"><span>CRECIMIENTO DIGITAL</span><span>↗ 128%</span></div>
+                </div>
+                <div class="floating-badge badge-top"><span>✦</span> Ideas que se convierten en producto</div>
+                <div class="floating-badge badge-bottom"><span class="badge-check">✓</span> Estrategia + tecnología</div>
+            </div>
+        </section>
 
-            <!-- Proyecto 2 -->
-            <div class="border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition">
-                <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-400">[Imagen E-commerce]</div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">Capitana Makeup</h3>
-                    <p class="text-gray-600 mb-4 text-sm">Desarrollo de E-commerce escalable. Catálogo dinámico multimarcas con gestión de inventario automatizada y optimización para ventas móviles.</p>
-                    <div class="flex gap-2 text-xs font-semibold text-briel">
-                        <span class="bg-blue-50 px-2 py-1 rounded">E-commerce</span>
-                        <span class="bg-blue-50 px-2 py-1 rounded">UI/UX</span>
-                    </div>
+        <section class="trust-strip" aria-label="Especialidades">
+            <div class="container trust-inner"><span data-content="trust_1">DISEÑO CON PROPÓSITO</span><i></i><span data-content="trust_2">TECNOLOGÍA ESCALABLE</span><i></i><span data-content="trust_3">ACOMPAÑAMIENTO REAL</span><i></i><span data-content="trust_4">COLOMBIA</span></div>
+        </section>
+
+        <section class="section section-services" id="servicios">
+            <div class="container">
+                <div class="section-heading">
+                    <div><p class="eyebrow" data-content="services_eyebrow">QUÉ HACEMOS</p><h2 data-content="services_title">Tecnología que trabaja<br>para tu negocio.</h2></div>
+                    <p class="section-lead" data-content="services_description">Soluciones digitales pensadas para resolver problemas reales, mejorar procesos y ayudarte a avanzar con confianza.</p>
+                </div>
+                <div class="services-grid" id="services-list">
+                    <article class="service-card"><span class="service-icon">↗</span><p class="card-index">01 / E-COMMERCE</p><h3>Tiendas online</h3><p>Experiencias de compra rápidas, atractivas y listas para convertir visitas en clientes.</p></article>
+                    <article class="service-card"><span class="service-icon">⌘</span><p class="card-index">02 / DESARROLLO</p><h3>Plataformas a medida</h3><p>Aplicaciones web y sistemas diseñados alrededor de la forma en que trabaja tu negocio.</p></article>
+                    <article class="service-card"><span class="service-icon">✳</span><p class="card-index">03 / AUTOMATIZACIÓN</p><h3>Automatización e IA</h3><p>Conecta tus herramientas y libera tiempo con automatizaciones inteligentes.</p></article>
                 </div>
             </div>
+        </section>
 
-            <!-- Proyecto 3 -->
-            <div class="border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition">
-                <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-400">[Imagen IA/Código]</div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">Automatización con API Gemini</h3>
-                    <p class="text-gray-600 mb-4 text-sm">Desarrollo de flujos de trabajo personalizados con IA generativa, creando asistentes virtuales que optimizan el procesamiento de datos corporativos.</p>
-                    <div class="flex gap-2 text-xs font-semibold text-briel">
-                        <span class="bg-blue-50 px-2 py-1 rounded">Python</span>
-                        <span class="bg-blue-50 px-2 py-1 rounded">Google AI Studio</span>
-                    </div>
+        <section class="section section-projects" id="proyectos">
+            <div class="container">
+                <div class="section-heading">
+                    <div><p class="eyebrow" data-content="portfolio_eyebrow">TRABAJO SELECCIONADO</p><h2 data-content="portfolio_title">Ideas que ya están<br>haciendo la diferencia.</h2></div>
+                    <p class="section-lead" data-content="portfolio_description">Cada proyecto empieza escuchando. El resultado: herramientas útiles, hechas para durar y crecer junto a quienes las usan.</p>
+                </div>
+                <div class="projects-grid" id="projects-list">
+                    <article class="project-card"><div class="project-image project-art project-art-one"><span class="project-image-label">PLATAFORMA DIGITAL</span><span class="project-art-title">Trading<br>en la Zona<span>.</span></span><span class="project-orbit"></span></div><div class="project-info"><div><p class="project-kicker">EDUCACIÓN FINANCIERA</p><h3>Trading en la Zona</h3></div><span class="project-arrow" aria-hidden="true">↗</span><p class="project-description">Plataforma para cursos, análisis de mercado y transmisiones en vivo, reunidos en un solo ecosistema.</p><div class="tag-list"><span>Web app</span><span>Plataforma educativa</span></div></div></article>
+                    <article class="project-card"><div class="project-image project-art project-art-two"><span class="project-image-label">E-COMMERCE</span><span class="project-art-title project-makeup">CAPITANA<br><em>MAKEUP</em></span><span class="project-product-shape"></span></div><div class="project-info"><div><p class="project-kicker">BELLEZA Y COMERCIO</p><h3>Capitana Makeup</h3></div><span class="project-arrow" aria-hidden="true">↗</span><p class="project-description">Tienda online multimarca con catálogo dinámico, inventario organizado y una experiencia optimizada para móviles.</p><div class="tag-list"><span>E-commerce</span><span>Diseño UX/UI</span></div></div></article>
+                    <article class="project-card"><div class="project-image project-art project-art-three"><span class="project-image-label">INTELIGENCIA ARTIFICIAL</span><span class="project-ai-orb">✳</span><span class="project-art-title">Menos rutina.<br><span>Más posibilidades.</span></span></div><div class="project-info"><div><p class="project-kicker">AUTOMATIZACIÓN</p><h3>Flujos inteligentes con IA</h3></div><span class="project-arrow" aria-hidden="true">↗</span><p class="project-description">Asistentes y flujos de trabajo a medida para agilizar tareas y conectar procesos de negocio.</p><div class="tag-list"><span>Automatización</span><span>Inteligencia artificial</span></div></div></article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Sobre Mí -->
-    <section class="bg-dark text-white py-20">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
-            <div class="w-full md:w-1/3">
-                <div class="aspect-square bg-gray-700 rounded-xl flex items-center justify-center text-gray-400 text-sm">[Tu Foto Profesional Aquí]</div>
+        <section class="section about-section" id="sobre-mi">
+            <div class="container about-layout">
+                <div class="about-portrait">
+                    <div class="portrait-frame"><div class="portrait-initial" data-content="brand_initial">B</div><span class="portrait-spark">✳</span></div>
+                    <div class="portrait-caption"><span class="status-dot"></span><span data-content="location">Valledupar, Colombia</span></div>
+                </div>
+                <div class="about-copy"><p class="eyebrow" data-content="about_eyebrow">QUIÉN ESTÁ DETRÁS</p><h2 data-content="about_title">Construimos con propósito. Crecemos contigo.</h2><p data-content="about_paragraph_1">Soy ingeniero de software y me apasiona convertir desafíos cotidianos en soluciones digitales simples, bien diseñadas y confiables.</p><p data-content="about_paragraph_2">BrielCode nace con una visión de legado y compromiso a largo plazo. Cada proyecto lo construyo con dedicación, como si fuera propio.</p>                <a class="text-link" href="#contacto" data-whatsapp-link><span data-content="about_cta">Cuéntame tu idea</span><span aria-hidden="true">↗</span></a></div>
             </div>
-            <div class="w-full md:w-2/3">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6">El ingeniero detrás del crecimiento de tu negocio</h2>
-                <p class="text-gray-300 text-lg mb-6 leading-relaxed">
-                    Soy ingeniero de software, especializado en transformar negocios físicos en plataformas digitales de alto rendimiento. A través del desarrollo web, comercio electrónico y la integración de Inteligencia Artificial, mi objetivo es ser el puente entre tu negocio y la tecnología que necesitas para escalar.
-                </p>
-                <p class="text-gray-300 text-lg leading-relaxed">
-                    BrielCode nace con una visión de legado y compromiso a largo plazo, llevando en su nombre la inspiración de mi hijo, Gabriel. Con esa misma dedicación construyo la infraestructura de cada empresa que confía en mi trabajo.
-                </p>
+        </section>
+
+        <section class="contact-section" id="contacto">
+            <div class="container contact-card">
+                <div class="contact-orb contact-orb-one"></div><div class="contact-orb contact-orb-two"></div>
+                <div class="contact-content"><p class="eyebrow eyebrow-light" data-content="contact_eyebrow">TU SIGUIENTE PASO</p><h2 data-content="contact_title">¿Y si hacemos realidad<br>lo que tienes en mente?</h2><p data-content="contact_description">Cuéntame qué necesitas. Hablemos de cómo la tecnología puede ayudarte a llegar más lejos.</p><a class="button button-light" id="whatsapp-link" href="#contacto" data-whatsapp-link><span data-content="contact_cta">Empecemos a conversar</span><span aria-hidden="true">↗</span></a></div>
+                <div class="contact-spark" aria-hidden="true">✳</div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Footer / Contacto -->
-    <footer id="contacto" class="container mx-auto px-6 py-16 text-center">
-        <h2 class="text-3xl font-bold mb-6">¿Listo para digitalizar tu negocio?</h2>
-        <p class="text-gray-600 mb-8 max-w-md mx-auto">Escríbeme directamente por WhatsApp para hablar sobre las necesidades de tu empresa y armar un plan de acción.</p>
-        <!-- Reemplaza 573000000000 con tu número real -->
-        <a href="https://wa.me/573000000000?text=Hola,%20vengo%20de%20la%20página%20de%20BrielCode%20y%20quiero%20cotizar%20un%20proyecto." target="_blank" class="bg-green-500 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-green-600 transition shadow-lg inline-block mb-12">
-            📲 Hablar por WhatsApp
-        </a>
-        <div class="text-gray-400 text-sm border-t pt-8">
-            &copy; 2026 BrielCode. Desarrollado en Valledupar, Colombia.
-        </div>
-    </footer>
-
+    <footer class="site-footer"><div class="container footer-inner"><a class="brand footer-brand" href="#inicio"><span class="brand-mark" data-content="brand_initial">B</span><span data-content="brand_name">BrielCode</span><span class="brand-dot">.</span></a><p data-content="footer_text">Diseño y desarrollo digital desde Valledupar, Colombia.</p><div class="footer-bottom"><span>© <span id="current-year">2026</span> <span data-content="brand_name">BrielCode</span>. Todos los derechos reservados.</span><a href="#inicio">Volver arriba ↑</a></div></div></footer>
 </body>
 </html>

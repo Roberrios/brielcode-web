@@ -2,110 +2,116 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BrielCode | Admin Panel</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Cargamos la librería de Supabase -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#f7f8fc">
+    <title>Administración | BrielCode</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/supabase-config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="/admin.js"></script>
 </head>
-<body class="bg-gray-100 p-10">
+<body class="admin-body">
+    <main class="admin-shell">
+        <section class="admin-login" id="login-panel" aria-labelledby="login-title">
+            <a class="brand admin-brand" href="/"><span class="brand-mark">B</span><span>BrielCode</span><span class="brand-dot">.</span></a>
+            <p class="eyebrow">PANEL PRIVADO</p>
+            <h1 id="login-title">Qué bueno verte.</h1>
+            <p class="admin-intro">Inicia sesión para actualizar el contenido de tu sitio web.</p>
+            <div class="admin-alert" id="login-message" role="status" aria-live="polite" hidden></div>
+            <form id="login-form" class="admin-form">
+                <label>Correo electrónico<input type="email" name="email" autocomplete="username" required></label>
+                <label>Contraseña<input type="password" name="password" autocomplete="current-password" required></label>
+                <button class="button button-primary admin-submit" type="submit">Iniciar sesión <span aria-hidden="true">↗</span></button>
+            </form>
+            <button class="admin-text-button" id="forgot-password" type="button">¿Olvidaste tu contraseña?</button>
+            <a class="admin-back-link" href="/">← Volver al sitio</a>
+        </section>
 
-    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
-        <h1 class="text-3xl font-bold mb-6 text-blue-600">Subir Nuevo Proyecto</h1>
-        
-        <form id="form-proyecto" class="space-y-4">
-            <div>
-                <label class="block font-semibold">Título del Proyecto</label>
-                <input type="text" id="titulo" class="w-full border p-2 rounded" required placeholder="Ej: Capitana Makeup">
+        <section class="admin-login" id="recovery-panel" aria-labelledby="recovery-title" hidden>
+            <a class="brand admin-brand" href="/"><span class="brand-mark">B</span><span>BrielCode</span><span class="brand-dot">.</span></a>
+            <p class="eyebrow">RECUPERAR ACCESO</p>
+            <h1 id="recovery-title">Crea una contraseña nueva.</h1>
+            <p class="admin-intro">Elige una contraseña segura para volver a entrar al panel.</p>
+            <div class="admin-alert" id="recovery-message" role="status" aria-live="polite" hidden></div>
+            <form id="recovery-form" class="admin-form">
+                <label>Nueva contraseña<input type="password" name="password" autocomplete="new-password" minlength="8" required></label>
+                <label>Confirma tu contraseña<input type="password" name="confirmation" autocomplete="new-password" minlength="8" required></label>
+                <button class="button button-primary admin-submit" type="submit">Actualizar contraseña</button>
+            </form>
+        </section>
+
+        <section class="admin-dashboard" id="dashboard-panel" hidden>
+            <header class="admin-topbar">
+                <a class="brand admin-brand" href="/"><span class="brand-mark">B</span><span>BrielCode</span><span class="brand-dot">.</span></a>
+                <div class="admin-user"><span id="admin-email"></span><button class="admin-text-button" id="logout-button" type="button">Cerrar sesión</button></div>
+            </header>
+            <div class="admin-heading">
+                <div><p class="eyebrow">ADMINISTRACIÓN DEL SITIO</p><h1>Tu contenido, bajo control.</h1><p>Edita lo que aparece en tu página pública. Los cambios se guardan en Supabase.</p></div>
+                <a class="button button-dark" href="/" target="_blank" rel="noopener noreferrer">Ver sitio ↗</a>
             </div>
+            <div class="admin-alert" id="dashboard-message" role="status" aria-live="polite" hidden></div>
+            <nav class="admin-tabs" aria-label="Secciones de administración">
+                <button class="admin-tab is-active" data-tab="content" type="button">Textos e imágenes</button>
+                <button class="admin-tab" data-tab="services" type="button">Servicios</button>
+                <button class="admin-tab" data-tab="projects" type="button">Portafolio</button>
+            </nav>
 
-            <div>
-                <label class="block font-semibold">Descripción</label>
-                <textarea id="descripcion" class="w-full border p-2 rounded" rows="3" required></textarea>
-            </div>
+            <section class="admin-panel is-active" id="tab-content">
+                <div class="admin-panel-heading"><div><h2>Contenido de la página</h2><p>Actualiza textos, datos de contacto e imagen de perfil.</p></div></div>
+                <form id="content-form" class="admin-form admin-content-form"></form>
+            </section>
 
-            <div>
-                <label class="block font-semibold">Tags (Separados por coma)</label>
-                <input type="text" id="tags" class="w-full border p-2 rounded" required placeholder="Ej: E-commerce, Python, React">
-            </div>
+            <section class="admin-panel" id="tab-services" hidden>
+                <div class="admin-panel-heading"><div><h2>Servicios</h2><p>Agrega, edita, publica u oculta los servicios que ofreces.</p></div></div>
+                <div class="admin-columns">
+                    <form id="service-form" class="admin-form admin-editor">
+                        <h3 id="service-form-title">Agregar servicio</h3>
+                        <input type="hidden" name="id">
+                        <label>Nombre<input name="title" maxlength="100" required></label>
+                        <label>Descripción<textarea name="description" rows="4" maxlength="500" required></textarea></label>
+                        <label>Icono o símbolo<input name="icon" maxlength="8" placeholder="✳"></label>
+                        <label>Orden<input name="sort_order" type="number" min="0" value="0" required></label>
+                        <label class="admin-checkbox"><input name="published" type="checkbox" checked> Visible en la página</label>
+                        <div class="admin-form-actions"><button class="button button-primary" type="submit">Guardar servicio</button><button class="admin-text-button cancel-edit" type="button" data-form="service-form">Cancelar</button></div>
+                    </form>
+                    <div class="admin-list-wrap"><h3>Servicios publicados</h3><div class="admin-list" id="services-admin-list"></div></div>
+                </div>
+            </section>
 
-            <div>
-                <label class="block font-semibold">Imagen (Captura de pantalla)</label>
-                <input type="file" id="imagen" accept="image/*" class="w-full border p-2 rounded" required>
-            </div>
-
-            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded hover:bg-blue-700 transition">
-                Subir Proyecto a la Web
-            </button>
-        </form>
-
-        <div id="mensaje" class="mt-4 font-bold text-center hidden"></div>
-    </div>
-
-    <script>
-        // 1. CONECTAR CON SUPABASE (Reemplaza con tus datos reales)
-        const supabaseUrl = 'TU_URL_DE_SUPABASE';
-        const supabaseKey = 'TU_KEY_ANON_DE_SUPABASE';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-        const form = document.getElementById('form-proyecto');
-        const mensajeInfo = document.getElementById('mensaje');
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            mensajeInfo.className = "mt-4 font-bold text-center text-blue-500 block";
-            mensajeInfo.innerText = "Subiendo imagen y guardando datos...";
-
-            // Capturar los datos del formulario
-            const titulo = document.getElementById('titulo').value;
-            const descripcion = document.getElementById('descripcion').value;
-            // Convertir "E-commerce, UX" en el formato de array de Supabase
-            const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim()); 
-            const archivoImagen = document.getElementById('imagen').files[0];
-
-            try {
-                // 2. SUBIR LA IMAGEN A STORAGE
-                // Creamos un nombre único para la foto
-                const nombreArchivo = `${Date.now()}_${archivoImagen.name}`;
-                
-                const { data: uploadData, error: uploadError } = await supabase.storage
-                    .from('portafolio')
-                    .upload(nombreArchivo, archivoImagen);
-
-                if (uploadError) throw uploadError;
-
-                // 3. OBTENER EL LINK PÚBLICO DE LA IMAGEN
-                const { data: urlData } = supabase.storage
-                    .from('portafolio')
-                    .getPublicUrl(nombreArchivo);
-                
-                const urlImagenPublica = urlData.publicUrl;
-
-                // 4. GUARDAR TODO EN LA TABLA 'proyectos'
-                const { error: dbError } = await supabase
-                    .from('proyectos')
-                    .insert([
-                        { 
-                            titulo: titulo, 
-                            descripcion: descripcion, 
-                            tags: tags, 
-                            url_imagen: urlImagenPublica 
-                        }
-                    ]);
-
-                if (dbError) throw dbError;
-
-                // Éxito
-                mensajeInfo.className = "mt-4 font-bold text-center text-green-600 block";
-                mensajeInfo.innerText = "¡Proyecto subido con éxito! Ya puedes verlo en tu web.";
-                form.reset(); // Limpiar el formulario
-
-            } catch (error) {
-                console.error(error);
-                mensajeInfo.className = "mt-4 font-bold text-center text-red-600 block";
-                mensajeInfo.innerText = "Hubo un error: " + error.message;
-            }
-        });
-    </script>
+            <section class="admin-panel" id="tab-projects" hidden>
+                <div class="admin-panel-heading"><div><h2>Portafolio</h2><p>Administra proyectos, imágenes, etiquetas y enlaces externos.</p></div></div>
+                <div class="admin-columns">
+                    <form id="project-form" class="admin-form admin-editor">
+                        <h3 id="project-form-title">Agregar proyecto</h3>
+                        <input type="hidden" name="id">
+                        <label>Nombre del proyecto<input name="title" maxlength="120" required></label>
+                        <label>Categoría<input name="category" maxlength="80" placeholder="E-commerce, educación, automatización"></label>
+                        <label>Cliente o marca<input name="client_name" maxlength="120"></label>
+                        <label>Año<input name="project_year" type="number" min="2000" max="2100"></label>
+                        <label>Mi trabajo en el proyecto<input name="project_role" maxlength="180" placeholder="Diseño y desarrollo web"></label>
+                        <label>Descripción<textarea name="description" rows="4" maxlength="1000" required></textarea></label>
+                        <label>El reto<textarea name="challenge" rows="4" maxlength="2000"></textarea></label>
+                        <label>La solución<textarea name="solution" rows="4" maxlength="2000"></textarea></label>
+                        <label>Resultados<textarea name="results" rows="4" maxlength="2000"></textarea></label>
+                        <label>Etiquetas, separadas por comas<input name="tags" placeholder="E-commerce, Diseño UX" maxlength="300"></label>
+                        <label>Enlace del proyecto<input name="project_url" type="url" placeholder="https://ejemplo.com"></label>
+                        <label>Imagen del proyecto<input name="image" type="file" accept="image/jpeg,image/png,image/webp,image/avif"><span class="admin-help">JPG, PNG, WebP o AVIF. Máximo 8 MB.</span></label>
+                        <div class="admin-image-preview" id="project-image-preview" hidden></div>
+                        <label>Galería del proyecto<input name="gallery" type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple><span class="admin-help">Puedes subir varias imágenes, máximo 8 MB cada una.</span></label>
+                        <div class="admin-gallery-preview" id="project-gallery-preview"></div>
+                        <label>Orden<input name="sort_order" type="number" min="0" value="0" required></label>
+                        <label class="admin-checkbox"><input name="published" type="checkbox" checked> Visible en la página</label>
+                        <div class="admin-form-actions"><button class="button button-primary" type="submit">Guardar proyecto</button><button class="admin-text-button cancel-edit" type="button" data-form="project-form">Cancelar</button></div>
+                    </form>
+                    <div class="admin-list-wrap"><h3>Proyectos</h3><div class="admin-list" id="projects-admin-list"></div></div>
+                </div>
+            </section>
+            <footer class="admin-footer">BrielCode · Panel privado de administración</footer>
+        </section>
+    </main>
 </body>
 </html>
