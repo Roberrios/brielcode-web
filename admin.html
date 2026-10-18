@@ -83,19 +83,19 @@
             </section>
 
             <section class="admin-panel" id="tab-projects" hidden>
-                <div class="admin-panel-heading"><div><h2>Portafolio</h2><p>Administra proyectos, imágenes, etiquetas y enlaces externos.</p></div></div>
+                <div class="admin-panel-heading"><div><h2>Portafolio</h2><p>Crea proyectos terminados o guarda próximos proyectos como borradores. Cada proyecto puede incluir imágenes, enlace, descripción, reto y solución.</p></div></div>
                 <div class="admin-columns">
                     <form id="project-form" class="admin-form admin-editor">
                         <h3 id="project-form-title">Agregar proyecto</h3>
                         <input type="hidden" name="id">
                         <label>Nombre del proyecto<input name="title" maxlength="120" required></label>
                         <label>Categoría<input name="category" maxlength="80" placeholder="E-commerce, educación, automatización"></label>
-                        <label>Cliente o marca<input name="client_name" maxlength="120"></label>
+                        <label>Empresa o cliente<input name="client_name" maxlength="120"></label>
                         <label>Año<input name="project_year" type="number" min="2000" max="2100"></label>
                         <label>Mi trabajo en el proyecto<input name="project_role" maxlength="180" placeholder="Diseño y desarrollo web"></label>
-                        <label>Descripción<textarea name="description" rows="4" maxlength="1000" required></textarea></label>
-                        <label>El reto<textarea name="challenge" rows="4" maxlength="2000"></textarea></label>
-                        <label>La solución<textarea name="solution" rows="4" maxlength="2000"></textarea></label>
+                        <label>Descripción del proyecto<textarea name="description" rows="4" maxlength="1000" required></textarea></label>
+                        <label>Necesidad o reto de la empresa<textarea name="challenge" rows="4" maxlength="2000"></textarea></label>
+                        <label>Qué se hizo y cómo se solucionó<textarea name="solution" rows="4" maxlength="2000"></textarea></label>
                         <label>Resultados<textarea name="results" rows="4" maxlength="2000"></textarea></label>
                         <label>Etiquetas, separadas por comas<input name="tags" placeholder="E-commerce, Diseño UX" maxlength="300"></label>
                         <label>Enlace del proyecto<input name="project_url" type="url" placeholder="https://ejemplo.com"></label>
@@ -104,10 +104,13 @@
                         <label>Galería del proyecto<input name="gallery" type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple><span class="admin-help">Puedes subir varias imágenes, máximo 8 MB cada una.</span></label>
                         <div class="admin-gallery-preview" id="project-gallery-preview"></div>
                         <label>Orden<input name="sort_order" type="number" min="0" value="0" required></label>
-                        <label class="admin-checkbox"><input name="published" type="checkbox" checked> Visible en la página</label>
+                        <div>
+                            <label class="admin-checkbox"><input name="published" type="checkbox" checked> Publicado en el sitio</label>
+                            <span class="admin-help">Desmárcalo para guardar un próximo proyecto como borrador, sin mostrarlo al público.</span>
+                        </div>
                         <div class="admin-form-actions"><button class="button button-primary" type="submit">Guardar proyecto</button><button class="admin-text-button cancel-edit" type="button" data-form="project-form">Cancelar</button></div>
                     </form>
-                    <div class="admin-list-wrap"><h3>Proyectos</h3><div class="admin-list" id="projects-admin-list"></div></div>
+                    <div class="admin-list-wrap"><h3>Proyectos publicados y próximos</h3><div class="admin-list" id="projects-admin-list"></div></div>
                 </div>
             </section>
             <footer class="admin-footer">BrielCode · Panel privado de administración</footer>

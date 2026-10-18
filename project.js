@@ -55,17 +55,29 @@
     function renderGallery(project) {
         const urls = project.gallery_urls || [];
         const gallery = document.getElementById("project-gallery");
-        const images = [project.image_url, ...urls].filter(Boolean);
-        if (!images.length) return;
-        gallery.replaceChildren(...images.map((url, index) => {
-            const figure = document.createElement("figure");
-            const image = document.createElement("img");
-            image.src = url;
-            image.alt = `${project.title} — imagen ${index + 1}`;
-            image.loading = "lazy";
-            figure.append(image);
-            return figure;
-        }));
+        if (!urls.length) return;
+        let currentIndex = 0;
+        const image = document.createElement("img");
+        image.loading = "lazy";
+
+        function showImage(index) {
+            currentIndex = index;
+            image.src = urls[currentIndex];
+            image.alt = `${project.title} — imagen ${currentIndex + 1}`;
+            document.getElementById("gallery-counter").textContent = `${currentIndex + 1} / ${urls.length}`;
+            document.getElementById("gallery-previous").disabled = currentIndex === 0;
+            document.getElementById("gallery-next").disabled = currentIndex === urls.length - 1;
+        }
+
+        gallery.replaceChildren(image);
+        showImage(currentIndex);
+        if (urls.length === 1) {
+            document.getElementById("gallery-previous").hidden = true;
+            document.getElementById("gallery-next").hidden = true;
+        } else {
+            document.getElementById("gallery-previous").addEventListener("click", () => showImage(currentIndex - 1));
+            document.getElementById("gallery-next").addEventListener("click", () => showImage(currentIndex + 1));
+        }
         document.getElementById("gallery-section").hidden = false;
     }
 

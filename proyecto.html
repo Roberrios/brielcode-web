@@ -48,7 +48,12 @@
             </div>
             <section class="detail-gallery-section" id="gallery-section" hidden>
                 <h2>Una mirada más de cerca</h2>
-                <div class="detail-gallery" id="project-gallery"></div>
+                <div class="detail-gallery">
+                    <button class="gallery-nav" id="gallery-previous" type="button" aria-label="Ver imagen anterior">←</button>
+                    <figure id="project-gallery"></figure>
+                    <button class="gallery-nav" id="gallery-next" type="button" aria-label="Ver imagen siguiente">→</button>
+                </div>
+                <p class="gallery-counter" id="gallery-counter" aria-live="polite"></p>
             </section>
             <section class="contact-section detail-contact">
                 <div class="contact-card">

@@ -332,7 +332,7 @@
         description.textContent = item.description;
         const meta = document.createElement("span");
         meta.className = "admin-item-meta";
-        meta.textContent = item.published ? "Publicado" : "Oculto";
+        meta.textContent = item.published ? "Publicado" : (type === "project" ? "Próximo proyecto · borrador" : "Oculto");
         details.append(title, description, meta);
         const actions = document.createElement("div");
         actions.className = "admin-item-actions";
@@ -410,6 +410,11 @@
         const form = type === "service" ? serviceForm : projectForm;
         const title = document.getElementById(`${type}-form-title`);
         title.textContent = type === "service" ? "Editar servicio" : "Editar proyecto";
+        if (type === "project") {
+            const preview = document.getElementById("project-image-preview");
+            preview.replaceChildren();
+            preview.hidden = true;
+        }
         Object.entries(item).forEach(([key, value]) => {
             const field = form.elements.namedItem(key);
             if (!field || field.type === "file") return;
