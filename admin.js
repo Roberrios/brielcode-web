@@ -418,8 +418,11 @@
         Object.entries(item).forEach(([key, value]) => {
             const field = form.elements.namedItem(key);
             if (!field || field.type === "file") return;
-            field.value = key === "tags" ? (value || []).join(", ") : value ?? "";
-            if (field.type === "checkbox") field.checked = Boolean(value);
+            if (field.type === "checkbox") {
+                field.checked = Boolean(value);
+            } else {
+                field.value = key === "tags" ? (value || []).join(", ") : value ?? "";
+            }
         });
         if (type === "project" && item.image_url) {
             showPreview(document.getElementById("project-image-preview"), item.image_url, true);
@@ -633,7 +636,7 @@
                 gallery_urls: projectGallery.map((image) => image.url),
                 gallery_paths: projectGallery.map((image) => image.path).filter(Boolean),
                 sort_order: Number(form.get("sort_order")),
-                published: form.get("published") === "on"
+                published: projectForm.elements.namedItem("published").checked
             };
             const query = id
                 ? client.from("projects").update(record).eq("id", id).select().single()
@@ -655,7 +658,10 @@
             projects.sort((a, b) => a.sort_order - b.sort_order);
             renderProjects();
             resetEditor(projectForm);
-            showMessage(dashboardMessage, `Proyecto guardado correctamente.${cleanupWarning}`, Boolean(cleanupWarning));
+            const visibilityMessage = data.published
+                ? "Proyecto guardado y publicado en el sitio."
+                : "Proyecto guardado como borrador; no aparecerá en el portafolio público.";
+            showMessage(dashboardMessage, `${visibilityMessage}${cleanupWarning}`, Boolean(cleanupWarning));
         } catch (error) {
             let cleanupMessage = "";
             if (uploadedPaths.length) {

@@ -54,6 +54,7 @@
 
     function renderProjects(projects) {
         const list = document.getElementById("projects-list");
+        const status = document.getElementById("projects-status");
         list.replaceChildren(...projects.map((project) => {
             const card = document.createElement("article");
             card.className = "project-card";
@@ -101,12 +102,26 @@
             card.append(link);
             return card;
         }));
+        status.textContent = projects.length ? "" : "Aún no hay proyectos publicados.";
+        status.hidden = projects.length > 0;
+    }
+
+    function showProjectsError(message) {
+        const list = document.getElementById("projects-list");
+        const status = document.getElementById("projects-status");
+        list.replaceChildren();
+        status.textContent = message;
+        status.hidden = false;
     }
 
     async function loadContent() {
-        if (!hasConfig) return;
+        if (!hasConfig) {
+            showProjectsError("El portafolio no está conectado a Supabase.");
+            return;
+        }
         if (!window.supabase) {
-            console.error("No se pudo cargar el cliente de Supabase; se mantiene el contenido HTML inicial.");
+            console.error("No se pudo cargar el cliente de Supabase.");
+            showProjectsError("No se pudieron cargar los proyectos. Inténtalo de nuevo más tarde.");
             return;
         }
         const client = window.supabase.createClient(config.url, config.anonKey);
@@ -116,9 +131,14 @@
             client.from("projects").select("id, title, category, description, tags, image_url, project_url, sort_order").eq("published", true).order("sort_order")
         ]);
 
-        if (contentResult.error) throw contentResult.error;
-        if (servicesResult.error) throw servicesResult.error;
-        if (projectsResult.error) throw projectsResult.error;
+        if (contentResult.error) console.error("No se pudo cargar el contenido del sitio:", contentResult.error);
+        if (servicesResult.error) console.error("No se pudieron cargar los servicios:", servicesResult.error);
+        if (projectsResult.error) {
+            console.error("No se pudieron cargar los proyectos publicados:", projectsResult.error);
+            showProjectsError("No se pudieron cargar los proyectos publicados. Inténtalo de nuevo más tarde.");
+        } else {
+            renderProjects(projectsResult.data || []);
+        }
 
         const content = contentResult.data && contentResult.data.content;
         if (content) {
@@ -138,11 +158,11 @@
             }
             document.title = content.page_title || `${content.brand_name || "BrielCode"} | Desarrollo digital`;
         }
-        renderServices(servicesResult.data || []);
-        renderProjects(projectsResult.data || []);
+        if (!servicesResult.error) renderServices(servicesResult.data || []);
     }
 
     loadContent().catch((error) => {
         console.error("No se pudo cargar el contenido publicado desde Supabase:", error);
+        showProjectsError("No se pudieron cargar los proyectos publicados. Inténtalo de nuevo más tarde.");
     });
 })();

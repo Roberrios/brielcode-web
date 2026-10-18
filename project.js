@@ -40,6 +40,8 @@
         back.href = "/#proyectos";
         back.textContent = "Volver a proyectos";
         state.append(title, description, back);
+        state.hidden = false;
+        content.hidden = true;
     }
 
     function renderTags(tags) {

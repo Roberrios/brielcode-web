@@ -94,6 +94,8 @@ h2 { margin-bottom: 0; font-size: clamp(32px, 4vw, 45px); font-weight: 800; lett
 .service-card > p:last-child { max-width: 290px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.75; }
 .section-projects { padding-bottom: 112px; }
 .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 21px; }
+.projects-status { margin-top: 28px; color: var(--muted); font-size: 13px; }
+.projects-status[hidden] { display: none; }
 .project-card { overflow: hidden; border: 1px solid #ebedf3; border-radius: 13px; background: white; transition: transform .2s, box-shadow .2s; }
 .project-card:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(29,40,82,.09); }
 .project-card-link { display: block; height: 100%; color: inherit; }
