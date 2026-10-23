@@ -87,7 +87,7 @@
                 ["contact_title", "Título de contacto", true],
                 ["contact_description", "Descripción de contacto", true],
                 ["contact_cta", "Texto del botón de contacto"],
-                ["whatsapp_number", "Número de WhatsApp (con indicativo, solo números)", false, "573001234567"],
+                ["whatsapp_number", "Número de WhatsApp (indicativo de país, solo números)", false, "573001234567"],
                 ["whatsapp_message", "Mensaje inicial de WhatsApp", true],
                 ["footer_text", "Texto del pie de página", true]
             ]
@@ -185,6 +185,11 @@
             group.fields.forEach(([key, title, multiline, placeholder]) => {
                 const control = document.createElement(multiline ? "textarea" : "input");
                 control.name = key;
+                if (key === "whatsapp_number") {
+                    control.type = "tel";
+                    control.inputMode = "numeric";
+                    control.autocomplete = "tel";
+                }
                 if (multiline) control.rows = key.includes("description") || key.includes("paragraph") ? 3 : 2;
                 if (placeholder) control.placeholder = placeholder;
                 control.required = key !== "whatsapp_number";

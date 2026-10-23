@@ -23,6 +23,8 @@
 
     function setWhatsAppLinks(number, message) {
         const internationalNumber = String(number || "").replace(/\D/g, "");
+        const floatingButton = document.getElementById("whatsapp-floating");
+        floatingButton.hidden = !internationalNumber;
         if (!internationalNumber) return;
         const href = `https://wa.me/${internationalNumber}?text=${encodeURIComponent(message)}`;
         document.querySelectorAll("[data-whatsapp-link]").forEach((link) => {
